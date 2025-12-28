@@ -39,6 +39,7 @@ export async function GET(request: NextRequest) {
                 website: profile.website || '',
                 country: profile.country || '',
                 streetAddress: profile.street_address || '',
+                profileImage: profile.profile_image || '',
             },
             summary: profile.summary || '',
             education: profile.education ? JSON.parse(profile.education) : [],
@@ -90,6 +91,7 @@ export async function POST(request: NextRequest) {
         if (profileData.website !== undefined) dbData.website = profileData.website;
         if (profileData.country !== undefined) dbData.country = profileData.country;
         if (profileData.streetAddress !== undefined) dbData.street_address = profileData.streetAddress;
+        if (profileData.profileImage !== undefined) dbData.profile_image = profileData.profileImage;
         if (profileData.summary !== undefined) dbData.summary = profileData.summary;
         if (templateId !== undefined) dbData.template_id = templateId;
 

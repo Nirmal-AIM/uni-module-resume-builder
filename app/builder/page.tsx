@@ -73,6 +73,7 @@ export default function BuilderPage() {
           personal: {
             ...data.profile.basicInfo,
             address: data.profile.basicInfo.streetAddress || '', // Map streetAddress to address for form
+            skillsText: Array.isArray(data.profile.skills) ? data.profile.skills.join(', ') : '', // Convert array to comma-separated string
           },
           education_list: data.profile.education || [{}],
           experience: data.profile.experience || [{}],
@@ -113,6 +114,7 @@ export default function BuilderPage() {
           website: resumeData.personal?.website || '',
           country: resumeData.personal?.country || '',
           streetAddress: resumeData.personal?.address || '',
+          profileImage: resumeData.personal?.profileImage || '',
           summary: resumeData.summary?.text || '',
           education: resumeData.education_list || [],
           experience: resumeData.experience || [],

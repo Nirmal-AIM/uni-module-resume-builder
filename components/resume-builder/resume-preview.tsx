@@ -18,9 +18,9 @@ export function ResumePreview({ data, template = "modern" }: { data: any; templa
   // Template Styles
   if (template === "modern-blue") {
     return (
-      <Card className="min-h-[1123px] w-full bg-white shadow-none overflow-hidden text-black p-0 flex aspect-[1/1.414]">
-        {/* Left Sidebar */}
-        <div className="w-[35%] bg-[#1a365d] text-white p-8 flex flex-col gap-8 min-h-full">
+      <Card className="min-h-[1123px] w-full bg-white shadow-none overflow-hidden text-black p-0 grid grid-cols-[35%_65%] aspect-[1/1.414]" key={JSON.stringify(data)}>
+        {/* Left Sidebar - Blue */}
+        <div className="bg-[#1a365d] text-white p-8 flex flex-col gap-8 min-h-full">
           <div className="flex flex-col items-center text-center">
             <div className="w-32 h-32 rounded-full border-4 border-white/20 bg-white/10 mb-4 overflow-hidden flex items-center justify-center">
               {data.personal?.profileImage ? (
@@ -95,8 +95,8 @@ export function ResumePreview({ data, template = "modern" }: { data: any; templa
           )}
         </div>
 
-        {/* Main Content */}
-        <div className="flex-1 p-10">
+        {/* Right Side - White Main Content */}
+        <div className="p-10 bg-white">
           <header className="mb-10">
             <h1 className="text-5xl font-bold text-[#2d3748] mb-1">
               <span className="font-extrabold">{data.personal?.fullName?.split(" ")[0] || "RICHARD"}</span>{" "}
@@ -145,7 +145,7 @@ export function ResumePreview({ data, template = "modern" }: { data: any; templa
           )}
 
           {hasData(projects) && (
-            <section>
+            <section className="mb-8">
               <h2 className="text-lg font-bold text-[#1a365d] uppercase tracking-wider mb-4 border-b-2 border-gray-100 pb-1">
                 Projects
               </h2>
@@ -160,6 +160,23 @@ export function ResumePreview({ data, template = "modern" }: { data: any; templa
                     </div>
                     <p className="text-[10px] font-semibold text-gray-500 mb-2 italic">{proj.role}</p>
                     <p className="text-[10px] leading-relaxed text-gray-600">{proj.desc}</p>
+                  </div>
+                ))}
+              </div>
+            </section>
+          )}
+
+          {hasData(certificates) && (
+            <section>
+              <h2 className="text-lg font-bold text-[#1a365d] uppercase tracking-wider mb-4 border-b-2 border-gray-100 pb-1">
+                Certificates
+              </h2>
+              <div className="space-y-3">
+                {certificates.map((cert: any, idx: number) => (
+                  <div key={idx}>
+                    <h3 className="font-bold text-gray-800 text-xs">{cert.title || cert.name}</h3>
+                    {cert.issuer && <p className="text-[10px] text-gray-500">{cert.issuer}</p>}
+                    {cert.date && <p className="text-[10px] text-gray-400">{cert.date}</p>}
                   </div>
                 ))}
               </div>
