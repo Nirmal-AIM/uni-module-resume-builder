@@ -31,8 +31,9 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
   }, [])
 
   const login = async (email: string) => {
-    // Demo login logic
-    const newUser = { id: "1", name: email.split("@")[0], email }
+    // Generate unique user ID from email
+    const userId = btoa(email).replace(/[^a-zA-Z0-9]/g, '').substring(0, 20)
+    const newUser = { id: userId, name: email.split("@")[0], email }
     setUser(newUser)
     localStorage.setItem("unisynic_user", JSON.stringify(newUser))
   }
