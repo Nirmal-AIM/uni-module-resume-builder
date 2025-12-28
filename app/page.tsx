@@ -34,10 +34,10 @@ export default function LandingPage() {
     <div className="min-h-screen flex flex-col items-center justify-center bg-slate-50 p-4">
       <div className="max-w-md w-full space-y-8">
         <div className="text-center">
-          <div className="mx-auto h-12 w-12 rounded-xl bg-primary flex items-center justify-center text-primary-foreground font-bold text-2xl shadow-lg">
-            U
+          <div className="mx-auto h-24 w-24 flex items-center justify-center">
+            <img src="/unisync-logo.png" alt="UniSync Logo" className="w-full h-full object-contain" />
           </div>
-          <h1 className="mt-6 text-4xl font-extrabold tracking-tight text-slate-900">UniSynic</h1>
+          <h1 className="mt-6 text-4xl font-extrabold tracking-tight text-slate-900">UniSync</h1>
           <p className="mt-2 text-lg text-slate-600">Create professional resumes and portfolios in minutes.</p>
         </div>
 

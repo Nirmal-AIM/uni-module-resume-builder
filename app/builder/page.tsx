@@ -176,11 +176,11 @@ export default function BuilderPage() {
       <div className="flex flex-col h-screen bg-background text-foreground print:bg-white">
         <header className="border-b px-4 lg:px-6 py-3 lg:py-4 flex justify-between items-center bg-card shadow-sm print:hidden">
           <div className="flex items-center gap-2 lg:gap-3">
-            <div className="h-7 w-7 lg:h-8 lg:w-8 rounded-lg bg-primary flex items-center justify-center text-primary-foreground font-bold text-sm lg:text-base">
-              U
+            <div className="h-7 w-7 lg:h-8 lg:w-8 flex items-center justify-center">
+              <img src="/unisync-logo.png" alt="UniSync" className="w-full h-full object-contain" />
             </div>
             <div>
-              <h1 className="text-base lg:text-lg font-bold leading-none">UniSynic</h1>
+              <h1 className="text-base lg:text-lg font-bold leading-none">UniSync</h1>
               <p className="text-[10px] lg:text-xs text-muted-foreground mt-0.5 lg:mt-1 hidden sm:block">
                 Welcome, {user?.name}
               </p>
