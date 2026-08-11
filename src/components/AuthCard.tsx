@@ -79,8 +79,13 @@ export function AuthCard({ initialMode = 'login' }: { initialMode?: 'login' | 's
       setError(res.error);
       return;
     }
-    if (res.requiresConfirmation) {
-      setSuccessMsg('Account created! Please check your email inbox to confirm your account, then sign in.');
+    if (res.sessionPresent) {
+      setSuccessMsg('Account created successfully! Redirecting to Dashboard...');
+      setTimeout(() => {
+        navigate('/dashboard', { replace: true });
+      }, 500);
+    } else if (res.requiresConfirmation) {
+      setSuccessMsg('Account created! Please check your email inbox to confirm your account (or turn OFF "Confirm email" in Supabase Auth settings to log in instantly).');
     } else {
       setSuccessMsg('Account created successfully! Logging you in...');
       setTimeout(() => {
