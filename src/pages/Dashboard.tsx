@@ -58,6 +58,8 @@ function getInitial(name: string, email: string) {
 export function Dashboard() {
   const { user, profile, logout } = useAuth();
   const navigate = useNavigate();
+  const { openAIAssistant } = useAIAssistant();
+
   const [activeTab, setActiveTab] = useState('dashboard');
   const [userMenuOpen, setUserMenuOpen] = useState(false);
   const [existingResume, setExistingResume] = useState<ResumeRecord | null>(null);
@@ -73,6 +75,25 @@ export function Dashboard() {
   ]);
   const [chatInput, setChatInput] = useState('');
   const [isSendingChat, setIsSendingChat] = useState(false);
+
+  const [activeResourceModal, setActiveResourceModal] = useState<string | null>(null);
+  const fileImportRef = useRef<HTMLInputElement>(null);
+
+  const fullName =
+    profile?.full_name ||
+    user?.user_metadata?.full_name ||
+    user?.user_metadata?.name ||
+    '';
+  const email = user?.email ?? '';
+  const avatarUrl =
+    profile?.avatar_url ||
+    user?.user_metadata?.avatar_url ||
+    user?.user_metadata?.picture ||
+    '';
+
+  const displayName = fullName || email.split('@')[0] || 'User';
+  const initial = getInitial(fullName, email);
+  const greeting = getGreeting();
 
   const handleRunAIReview = async () => {
     setAiReviewModalOpen(true);
@@ -130,24 +151,6 @@ export function Dashboard() {
     navigate('/', { replace: true });
   };
 
-  const fullName =
-    profile?.full_name ||
-    user?.user_metadata?.full_name ||
-    user?.user_metadata?.name ||
-    '';
-  const email = user?.email ?? '';
-  const avatarUrl =
-    profile?.avatar_url ||
-    user?.user_metadata?.avatar_url ||
-    user?.user_metadata?.picture ||
-    '';
-
-  const displayName = fullName || email.split('@')[0] || 'User';
-  const initial = getInitial(fullName, email);
-  const greeting = getGreeting();
-
-  const { openAIAssistant } = useAIAssistant();
-
   const handleSidebarClick = (item: typeof sidebarItems[0]) => {
     setActiveTab(item.id);
     if (item.id === 'ai-assistant') {
@@ -158,9 +161,6 @@ export function Dashboard() {
       navigate(item.path);
     }
   };
-
-  const [activeResourceModal, setActiveResourceModal] = useState<string | null>(null);
-  const fileImportRef = useRef<HTMLInputElement>(null);
 
   const handleImportFile = (e: React.ChangeEvent<HTMLInputElement>) => {
     const file = e.target.files?.[0];
