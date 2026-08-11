@@ -34,15 +34,32 @@ export class ErrorBoundary extends Component<Props, State> {
             </div>
             <h2 className="text-lg font-bold text-gray-900">Something went wrong</h2>
             <p className="text-xs text-gray-500 leading-relaxed">
-              An unexpected error occurred. Please click below to refresh the page.
+              An unexpected runtime error was caught:
             </p>
-            <button
-              type="button"
-              onClick={() => window.location.reload()}
-              className="w-full py-3 bg-[#fc4a27] hover:bg-[#e0401f] text-white font-bold rounded-xl text-xs flex items-center justify-center gap-2 shadow-sm transition"
-            >
-              <RefreshCw className="h-4 w-4" /> Reload Page
-            </button>
+            {this.state.error && (
+              <div className="p-3 bg-red-50 border border-red-200 rounded-xl text-[11px] text-red-700 font-mono text-left overflow-x-auto max-h-32">
+                {this.state.error.message || String(this.state.error)}
+              </div>
+            )}
+            <div className="flex gap-2">
+              <button
+                type="button"
+                onClick={() => {
+                  this.setState({ hasError: false, error: null });
+                  window.location.href = '/dashboard';
+                }}
+                className="flex-1 py-2.5 bg-[#051C36] hover:bg-[#0d2d52] text-white font-bold rounded-xl text-xs transition"
+              >
+                Go to Dashboard
+              </button>
+              <button
+                type="button"
+                onClick={() => window.location.reload()}
+                className="flex-1 py-2.5 bg-[#fc4a27] hover:bg-[#e0401f] text-white font-bold rounded-xl text-xs flex items-center justify-center gap-1.5 shadow-sm transition"
+              >
+                <RefreshCw className="h-3.5 w-3.5" /> Reload Page
+              </button>
+            </div>
           </div>
         </div>
       );
