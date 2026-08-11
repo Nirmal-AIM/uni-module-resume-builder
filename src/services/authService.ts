@@ -17,22 +17,25 @@ export type Profile = {
 
 function friendlyError(message: string): string {
   const lower = message.toLowerCase();
+  if (lower.includes('invalid login credentials') || lower.includes('invalid credentials') || lower.includes('wrong password') || lower.includes('incorrect password')) {
+    return 'Invalid email or password. Please check your credentials and try again.';
+  }
+  if (lower.includes('email not confirmed') || lower.includes('email_not_confirmed')) {
+    return 'Email not confirmed. Please check your email inbox for the confirmation link, or disable email confirmation in Supabase Auth settings.';
+  }
+  if (lower.includes('already registered') || lower.includes('already exists') || lower.includes('user_already_exists')) {
+    return 'An account with this email address already exists. Please sign in instead.';
+  }
   if (lower.includes('rate limit') || lower.includes('rate_limit') || lower.includes('too many')) {
     return 'Too many requests. Please wait a moment and try again.';
   }
-  if (lower.includes('expired') || lower.includes('token has expired') || lower.includes('is expired')) {
-    return 'The code has expired. Please request a new one.';
-  }
-  if (lower.includes('invalid') || lower.includes('not found') || lower.includes('incorrect')) {
-    return 'Invalid code. Please check and try again.';
-  }
-  if (lower.includes('email') && lower.includes('not')) {
-    return 'Email could not be sent. Please check the address and try again.';
+  if (lower.includes('expired')) {
+    return 'Link or session has expired. Please try again.';
   }
   if (lower.includes('network') || lower.includes('fetch')) {
-    return 'Connection problem. Check your internet and try again.';
+    return 'Connection problem. Please check your internet and try again.';
   }
-  return 'Something went wrong. Please try again.';
+  return message;
 }
 
 export async function signInWithPassword(email: string, password: string): Promise<AuthResult> {
@@ -46,7 +49,11 @@ export async function signInWithPassword(email: string, password: string): Promi
   return { success: true };
 }
 
-export async function signUpWithPassword(email: string, password: string, fullName: string): Promise<AuthResult> {
+export async function signUpWithPassword(
+  email: string,
+  password: string,
+  fullName: string
+): Promise<AuthResult & { requiresConfirmation?: boolean }> {
   const { data, error } = await supabase.auth.signUp({
     email,
     password,
@@ -62,7 +69,8 @@ export async function signUpWithPassword(email: string, password: string, fullNa
   if (data.user) {
     await initializeUserProfile(data.user);
   }
-  return { success: true };
+  const requiresConfirmation = Boolean(data.user && !data.session);
+  return { success: true, requiresConfirmation };
 }
 
 export async function sendForgotPasswordReset(email: string): Promise<AuthResult> {

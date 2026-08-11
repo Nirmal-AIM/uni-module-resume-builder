@@ -79,10 +79,14 @@ export function AuthCard({ initialMode = 'login' }: { initialMode?: 'login' | 's
       setError(res.error);
       return;
     }
-    setSuccessMsg('Account created successfully! Redirecting to dashboard...');
-    setTimeout(() => {
-      navigate('/dashboard', { replace: true });
-    }, 1000);
+    if (res.requiresConfirmation) {
+      setSuccessMsg('Account created! Please check your email inbox to confirm your account, then sign in.');
+    } else {
+      setSuccessMsg('Account created successfully! Logging you in...');
+      setTimeout(() => {
+        navigate('/dashboard', { replace: true });
+      }, 1000);
+    }
   };
 
   const handleForgotPassword = async (e: FormEvent<HTMLFormElement>) => {
