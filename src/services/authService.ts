@@ -75,8 +75,13 @@ export async function signUpWithPassword(
 
 export async function sendForgotPasswordReset(email: string): Promise<AuthResult> {
   const { error } = await supabase.auth.resetPasswordForEmail(email, {
-    redirectTo: window.location.origin + '/dashboard',
+    redirectTo: window.location.origin + '/reset-password',
   });
+  return error ? { success: false, error: friendlyError(error.message) } : { success: true };
+}
+
+export async function updateUserPassword(newPassword: string): Promise<AuthResult> {
+  const { error } = await supabase.auth.updateUser({ password: newPassword });
   return error ? { success: false, error: friendlyError(error.message) } : { success: true };
 }
 

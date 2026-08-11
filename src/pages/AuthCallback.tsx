@@ -8,7 +8,13 @@ export function AuthCallback() {
 
   useEffect(() => {
     if (!loading) {
-      if (session) {
+      const hash = window.location.hash || '';
+      const search = window.location.search || '';
+      const isRecovery = hash.includes('type=recovery') || search.includes('type=recovery');
+
+      if (isRecovery) {
+        navigate('/reset-password', { replace: true });
+      } else if (session) {
         navigate('/dashboard', { replace: true });
       } else {
         navigate('/', { replace: true });
