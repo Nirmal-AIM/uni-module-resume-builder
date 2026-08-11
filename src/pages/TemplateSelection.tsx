@@ -301,7 +301,12 @@ export function TemplateSelection() {
             created_at: row.created_at,
           };
         });
-        setTemplates(mappedRecords);
+        const sortedMapped = mappedRecords.sort((a, b) => {
+          if (a.key === 'ats-6') return -1;
+          if (b.key === 'ats-6') return 1;
+          return Number(a.id) - Number(b.id);
+        });
+        setTemplates(sortedMapped);
       } else {
         setTemplates(ALL_10_TEMPLATES);
       }
@@ -372,8 +377,10 @@ export function TemplateSelection() {
     return matchesSearch && matchesRole;
   });
 
-  // Sort logic
+  // Sort logic: Keep ats-6 ALWAYS at #1 top position!
   const sortedTemplates = [...filteredTemplates].sort((a, b) => {
+    if (a.key === 'ats-6') return -1;
+    if (b.key === 'ats-6') return 1;
     if (sortBy === 'A–Z') {
       return a.name.localeCompare(b.name);
     }

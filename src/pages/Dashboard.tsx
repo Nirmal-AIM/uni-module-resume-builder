@@ -159,8 +159,131 @@ export function Dashboard() {
     }
   };
 
+  const [activeResourceModal, setActiveResourceModal] = useState<string | null>(null);
+  const fileImportRef = useRef<HTMLInputElement>(null);
+
+  const handleImportFile = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const file = e.target.files?.[0];
+    if (!file) return;
+    const reader = new FileReader();
+    reader.onload = async (evt) => {
+      try {
+        const content = evt.target?.result as string;
+        const parsed = JSON.parse(content);
+        await saveResume({ title: file.name.replace(/\.[^/.]+$/, ''), resume_data: parsed, template_key: 'ats-6' });
+        navigate('/builder?template=ats-6');
+      } catch (err) {
+        navigate('/builder?template=ats-6');
+      }
+    };
+    reader.readAsText(file);
+  };
+
   return (
     <div className="flex h-screen bg-[#F8FAFC] overflow-hidden">
+      {/* Hidden File Input for Import Resume */}
+      <input
+        ref={fileImportRef}
+        type="file"
+        accept=".json,.txt,.doc,.docx,.pdf"
+        onChange={handleImportFile}
+        className="hidden"
+      />
+
+      {/* Resource Modals */}
+      {activeResourceModal && (
+        <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/60 backdrop-blur-xs p-4">
+          <div className="w-full max-w-lg bg-white rounded-2xl p-6 shadow-2xl space-y-4">
+            <div className="flex items-center justify-between border-b border-gray-100 pb-3">
+              <h3 className="text-sm font-bold text-gray-900 flex items-center gap-2">
+                <Sparkles className="h-4 w-4 text-[#fc4a27]" />
+                {activeResourceModal === 'tips' && 'Resume Writing Tips'}
+                {activeResourceModal === 'ats' && 'ATS Scanner Guidelines'}
+                {activeResourceModal === 'mistakes' && 'Common Resume Mistakes to Avoid'}
+                {activeResourceModal === 'samples' && 'Sample Resumes by Role'}
+              </h3>
+              <button
+                type="button"
+                onClick={() => setActiveResourceModal(null)}
+                className="text-gray-400 hover:text-gray-600 p-1"
+              >
+                <X className="h-4 w-4" />
+              </button>
+            </div>
+
+            <div className="space-y-3 text-xs leading-relaxed text-gray-700 max-h-[60vh] overflow-y-auto pr-1">
+              {activeResourceModal === 'tips' && (
+                <>
+                  <p className="font-bold text-gray-900">5 Proven Tips for a Standout Resume:</p>
+                  <ul className="list-disc pl-4 space-y-2">
+                    <li><b>Use Strong Action Verbs:</b> Begin bullet points with verbs like <i>built, developed, managed, led, architected</i>.</li>
+                    <li><b>Quantify Your Results:</b> Add real numbers (e.g. "Increased load speed by 40%", "Managed $50k budget").</li>
+                    <li><b>Keep It Concise:</b> Limit resume length to 1-2 pages maximum.</li>
+                    <li><b>Match Job Keywords:</b> Include technical skills mentioned in target job descriptions.</li>
+                    <li><b>Proofread Carefully:</b> Ensure 100% accurate spelling and consistent dates.</li>
+                  </ul>
+                </>
+              )}
+
+              {activeResourceModal === 'ats' && (
+                <>
+                  <p className="font-bold text-gray-900">How to Pass ATS Scanners with 100% Rate:</p>
+                  <ul className="list-disc pl-4 space-y-2">
+                    <li><b>Use ATS Templates:</b> Select our <b>ATS Graduate</b> template for single-column clean parsing.</li>
+                    <li><b>Standard Section Titles:</b> Stick to clear headings like <i>Work Experience</i>, <i>Education</i>, <i>Skills</i>.</li>
+                    <li><b>Plain Text Formatting:</b> Avoid tables, images, or floating text boxes inside body text.</li>
+                    <li><b>Include Contact Info:</b> Place Email, Phone, LinkedIn, and Location at the top header.</li>
+                    <li><b>Export as PDF:</b> Always use our 1-click PDF download for crisp ATS ingestion.</li>
+                  </ul>
+                </>
+              )}
+
+              {activeResourceModal === 'mistakes' && (
+                <>
+                  <p className="font-bold text-gray-900">Top 5 Resume Mistakes to Avoid:</p>
+                  <ul className="list-disc pl-4 space-y-2">
+                    <li><b>Vague Descriptions:</b> Avoid generic tasks like "Responsible for daily tasks". Show impact instead!</li>
+                    <li><b>Unprofessional Email:</b> Use a clean professional email address (e.g. name@gmail.com).</li>
+                    <li><b>Irrelevant Information:</b> Exclude high school details if you have university degrees.</li>
+                    <li><b>Typos & Grammar Errors:</b> Run your text through our Groq AI Assistant to catch errors.</li>
+                    <li><b>Generic Objective Statements:</b> Replace objective statements with an Executive Summary.</li>
+                  </ul>
+                </>
+              )}
+
+              {activeResourceModal === 'samples' && (
+                <>
+                  <p className="font-bold text-gray-900">Sample Resume Outlines by Industry:</p>
+                  <div className="space-y-3">
+                    <div className="p-3 bg-gray-50 rounded-xl border border-gray-200">
+                      <h4 className="font-bold text-gray-900">Software Engineer / Tech</h4>
+                      <p className="text-[11px] text-gray-600 mt-0.5">Focus: Tech Stack, System Architecture, GitHub links, Open Source & Key Projects.</p>
+                    </div>
+                    <div className="p-3 bg-gray-50 rounded-xl border border-gray-200">
+                      <h4 className="font-bold text-gray-900">Data Analyst / Scientist</h4>
+                      <p className="text-[11px] text-gray-600 mt-0.5">Focus: Python, SQL, Tableau, Predictive Modeling, Machine Learning Metrics.</p>
+                    </div>
+                    <div className="p-3 bg-gray-50 rounded-xl border border-gray-200">
+                      <h4 className="font-bold text-gray-900">Product / Business Analyst</h4>
+                      <p className="text-[11px] text-gray-600 mt-0.5">Focus: Strategy, Agile, Stakeholder Management, User Retention %, Business Growth.</p>
+                    </div>
+                  </div>
+                </>
+              )}
+            </div>
+
+            <div className="pt-2 flex justify-end">
+              <button
+                type="button"
+                onClick={() => setActiveResourceModal(null)}
+                className="px-4 py-2 bg-[#051C36] text-white font-bold rounded-xl text-xs hover:bg-[#0d2d52] transition"
+              >
+                Close
+              </button>
+            </div>
+          </div>
+        </div>
+      )}
       {/* ── Sidebar ─────────────────────────────────────────── */}
       <aside className="flex w-[230px] shrink-0 flex-col bg-[#051C36] text-white">
         {/* Brand Logo */}
@@ -347,7 +470,7 @@ export function Dashboard() {
 
               {/* Import Resume */}
               <div
-                onClick={() => navigate('/templates')}
+                onClick={() => fileImportRef.current?.click()}
                 className="group flex flex-col justify-between rounded-2xl border border-gray-200/80 bg-white p-5 shadow-sm hover:shadow-md hover:border-emerald-300 transition-all cursor-pointer min-h-[140px]"
               >
                 <div className="flex items-start gap-3.5">
@@ -412,7 +535,10 @@ export function Dashboard() {
             <h2 className="text-base font-bold text-gray-900 mb-4">Resources & Insights</h2>
             <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
               {/* Resume Writing Tips */}
-              <div className="group flex items-center justify-between rounded-2xl border border-gray-200/80 bg-white p-5 shadow-sm hover:shadow-md transition-all cursor-pointer">
+              <div
+                onClick={() => setActiveResourceModal('tips')}
+                className="group flex items-center justify-between rounded-2xl border border-gray-200/80 bg-white p-5 shadow-sm hover:shadow-md transition-all cursor-pointer"
+              >
                 <div className="flex items-center gap-3.5 min-w-0">
                   <div className="flex h-10 w-10 shrink-0 items-center justify-center rounded-xl bg-amber-50 text-amber-500">
                     <GraduationCap className="h-5 w-5" />
@@ -428,7 +554,10 @@ export function Dashboard() {
               </div>
 
               {/* ATS Guidelines */}
-              <div className="group flex items-center justify-between rounded-2xl border border-gray-200/80 bg-white p-5 shadow-sm hover:shadow-md transition-all cursor-pointer">
+              <div
+                onClick={() => setActiveResourceModal('ats')}
+                className="group flex items-center justify-between rounded-2xl border border-gray-200/80 bg-white p-5 shadow-sm hover:shadow-md transition-all cursor-pointer"
+              >
                 <div className="flex items-center gap-3.5 min-w-0">
                   <div className="flex h-10 w-10 shrink-0 items-center justify-center rounded-xl bg-rose-50 text-rose-500">
                     <FileText className="h-5 w-5" />
@@ -444,7 +573,10 @@ export function Dashboard() {
               </div>
 
               {/* Common Mistakes */}
-              <div className="group flex items-center justify-between rounded-2xl border border-gray-200/80 bg-white p-5 shadow-sm hover:shadow-md transition-all cursor-pointer">
+              <div
+                onClick={() => setActiveResourceModal('mistakes')}
+                className="group flex items-center justify-between rounded-2xl border border-gray-200/80 bg-white p-5 shadow-sm hover:shadow-md transition-all cursor-pointer"
+              >
                 <div className="flex items-center gap-3.5 min-w-0">
                   <div className="flex h-10 w-10 shrink-0 items-center justify-center rounded-xl bg-teal-50 text-teal-600">
                     <AlertCircle className="h-5 w-5" />
@@ -460,7 +592,10 @@ export function Dashboard() {
               </div>
 
               {/* Sample Resumes */}
-              <div className="group flex items-center justify-between rounded-2xl border border-gray-200/80 bg-white p-5 shadow-sm hover:shadow-md transition-all cursor-pointer">
+              <div
+                onClick={() => setActiveResourceModal('samples')}
+                className="group flex items-center justify-between rounded-2xl border border-gray-200/80 bg-white p-5 shadow-sm hover:shadow-md transition-all cursor-pointer"
+              >
                 <div className="flex items-center gap-3.5 min-w-0">
                   <div className="flex h-10 w-10 shrink-0 items-center justify-center rounded-xl bg-purple-50 text-purple-600">
                     <BookOpen className="h-5 w-5" />

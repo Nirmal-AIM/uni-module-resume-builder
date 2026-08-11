@@ -36,12 +36,6 @@ const SIDEBAR_SECTIONS = [
 ];
 
 const TEMPLATE_OPTIONS = [
-  { id: "ats-6", name: "ATS Graduate (⭐ Recommended for Students)" },
-  { id: "ats-1", name: "ATS Classic (100% ATS)" },
-  { id: "ats-2", name: "ATS Career & Projects" },
-  { id: "ats-3", name: "ATS Professional Executive" },
-  { id: "ats-4", name: "ATS Engineering & Tech" },
-  { id: "ats-5", name: "ATS Leadership Executive" },
   { id: "modern-blue", name: "Executive Navy (Richard Sanchez)" },
   { id: "minimalist-orange", name: "Warm Terracotta (Zola Bekker)" },
   { id: "clean-teal", name: "Clean Teal (Drew Feig)" },
@@ -52,8 +46,7 @@ export function ResumeEditor() {
   const navigate = useNavigate();
   const [searchParams] = useSearchParams();
   const { user, profile, logout } = useAuth();
-  const urlTemplate = searchParams.get("template");
-  const initialTemplate = urlTemplate || "ats-6";
+  const initialTemplate = searchParams.get("template") || "modern-blue";
 
   const [activeSection, setActiveSection] = useState<string | null>("personal");
   const [selectedTemplate, setSelectedTemplate] = useState<string>(initialTemplate);
@@ -93,12 +86,7 @@ export function ResumeEditor() {
         if (!active) return;
         if (record) {
           if (record.title) setResumeTitle(record.title);
-          // If URL param exists, use URL param; otherwise use record's template
-          if (urlTemplate) {
-            setSelectedTemplate(urlTemplate);
-          } else if (record.template_key) {
-            setSelectedTemplate(record.template_key);
-          }
+          if (record.template_key) setSelectedTemplate(record.template_key);
           if (record.resume_data && typeof record.resume_data === "object") {
             setResumeData((prev: any) => ({
               ...prev,
@@ -241,9 +229,8 @@ export function ResumeEditor() {
                         setSelectedTemplate(tpl.id);
                         setShowTemplateDropdown(false);
                       }}
-                      className={`w-full text-left px-3 py-2 text-xs font-medium flex items-center justify-between hover:bg-white/10 transition ${
-                        selectedTemplate === tpl.id ? "text-[#fc4a27] font-bold bg-white/5" : "text-white"
-                      }`}
+                      className={`w-full text-left px-3 py-2 text-xs font-medium flex items-center justify-between hover:bg-white/10 transition ${selectedTemplate === tpl.id ? "text-[#fc4a27] font-bold bg-white/5" : "text-white"
+                        }`}
                     >
                       <span>{tpl.name}</span>
                       {selectedTemplate === tpl.id && <Check className="h-3.5 w-3.5 text-[#fc4a27]" />}
@@ -306,11 +293,10 @@ export function ResumeEditor() {
                       key={sec.id}
                       type="button"
                       onClick={() => setActiveSection(sec.id)}
-                      className={`w-full flex items-center justify-between px-3 py-2.5 rounded-xl text-xs font-semibold transition-all ${
-                        isActive
-                          ? "bg-[#0d2d52] text-white border-l-[3px] border-[#fc4a27] shadow-xs"
-                          : "text-[#8ca0b8] hover:bg-[#0d2d52]/60 hover:text-white"
-                      }`}
+                      className={`w-full flex items-center justify-between px-3 py-2.5 rounded-xl text-xs font-semibold transition-all ${isActive
+                        ? "bg-[#0d2d52] text-white border-l-[3px] border-[#fc4a27] shadow-xs"
+                        : "text-[#8ca0b8] hover:bg-[#0d2d52]/60 hover:text-white"
+                        }`}
                     >
                       <div className="flex items-center gap-2.5 min-w-0">
                         <Icon className={`h-4 w-4 shrink-0 ${isActive ? "text-[#fc4a27]" : "text-[#8ca0b8]"}`} />
