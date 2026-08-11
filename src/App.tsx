@@ -6,6 +6,11 @@ import { TemplateSelection } from '@/pages/TemplateSelection';
 import { ResumeEditor } from '@/pages/ResumeEditor';
 import { AuthCallback } from '@/pages/AuthCallback';
 import { ResetPassword } from '@/pages/ResetPassword';
+import { CoverLetters } from '@/pages/CoverLetters';
+import { ResumeAnalytics } from '@/pages/ResumeAnalytics';
+import { JobTracker } from '@/pages/JobTracker';
+import { ProfilePage } from '@/pages/ProfilePage';
+import { HelpSupport } from '@/pages/HelpSupport';
 import { ProtectedRoute } from '@/components/ProtectedRoute';
 import { useAuth } from '@/context/AuthContext';
 
@@ -36,6 +41,11 @@ function App() {
       <Route path="/templates" element={<ProtectedRoute><TemplateSelection /></ProtectedRoute>} />
       <Route path="/create-resume" element={<ProtectedRoute><TemplateSelection /></ProtectedRoute>} />
       <Route path="/builder" element={<ProtectedRoute><ResumeEditor /></ProtectedRoute>} />
+      <Route path="/cover-letters" element={<ProtectedRoute><CoverLetters /></ProtectedRoute>} />
+      <Route path="/resume-analytics" element={<ProtectedRoute><ResumeAnalytics /></ProtectedRoute>} />
+      <Route path="/job-tracker" element={<ProtectedRoute><JobTracker /></ProtectedRoute>} />
+      <Route path="/profile" element={<ProtectedRoute><ProfilePage /></ProtectedRoute>} />
+      <Route path="/help-support" element={<ProtectedRoute><HelpSupport /></ProtectedRoute>} />
       <Route path="*" element={<Navigate to="/" replace />} />
     </Routes>
   );

@@ -184,12 +184,12 @@ const ROLE_FILTERS = [
 const NAV_ITEMS = [
   { id: 'dashboard', label: 'Dashboard', icon: LayoutDashboard, path: '/dashboard', active: false },
   { id: 'templates', label: 'Templates', icon: LayoutTemplate, path: '/templates', active: true },
-  { id: 'ai-assistant', label: 'AI Assistant', icon: Sparkles, path: '#', active: false },
-  { id: 'cover-letters', label: 'Cover Letters', icon: Mail, path: '#', active: false },
-  { id: 'resume-analytics', label: 'Resume Analytics', icon: TrendingUp, path: '#', active: false },
-  { id: 'job-tracker', label: 'Job Tracker', icon: Briefcase, path: '#', active: false },
-  { id: 'profile', label: 'Profile', icon: User, path: '#', active: false },
-  { id: 'help-support', label: 'Help & Support', icon: HelpCircle, path: '#', active: false },
+  { id: 'ai-assistant', label: 'AI Assistant', icon: Sparkles, path: '/dashboard?ai=open', active: false },
+  { id: 'cover-letters', label: 'Cover Letters', icon: Mail, path: '/cover-letters', active: false },
+  { id: 'resume-analytics', label: 'Resume Analytics', icon: TrendingUp, path: '/resume-analytics', active: false },
+  { id: 'job-tracker', label: 'Job Tracker', icon: Briefcase, path: '/job-tracker', active: false },
+  { id: 'profile', label: 'Profile', icon: User, path: '/profile', active: false },
+  { id: 'help-support', label: 'Help & Support', icon: HelpCircle, path: '/help-support', active: false },
 ];
 
 function getInitial(name: string, email: string) {

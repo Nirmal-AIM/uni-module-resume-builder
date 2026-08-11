@@ -35,11 +35,11 @@ const sidebarItems = [
   { id: 'dashboard', label: 'Dashboard', icon: LayoutDashboard, path: '/dashboard' },
   { id: 'templates', label: 'Templates', icon: LayoutTemplate, path: '/templates' },
   { id: 'ai-assistant', label: 'AI Assistant', icon: Sparkles, path: '#' },
-  { id: 'cover-letters', label: 'Cover Letters', icon: Mail, path: '#' },
-  { id: 'resume-analytics', label: 'Resume Analytics', icon: TrendingUp, path: '#' },
-  { id: 'job-tracker', label: 'Job Tracker', icon: Briefcase, path: '#' },
-  { id: 'profile', label: 'Profile', icon: User, path: '#' },
-  { id: 'help-support', label: 'Help & Support', icon: HelpCircle, path: '#' },
+  { id: 'cover-letters', label: 'Cover Letters', icon: Mail, path: '/cover-letters' },
+  { id: 'resume-analytics', label: 'Resume Analytics', icon: TrendingUp, path: '/resume-analytics' },
+  { id: 'job-tracker', label: 'Job Tracker', icon: Briefcase, path: '/job-tracker' },
+  { id: 'profile', label: 'Profile', icon: User, path: '/profile' },
+  { id: 'help-support', label: 'Help & Support', icon: HelpCircle, path: '/help-support' },
 ];
 
 function getGreeting() {
