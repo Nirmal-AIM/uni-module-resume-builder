@@ -518,6 +518,101 @@ export function ResumePreview({ data = {}, template = "modern" }: { data: any; t
     );
   }
 
+  // ── ATS-6: ATS Graduate / Student Resume Template ──
+  if (template === "ats-6" || template === "ats6") {
+    const fullNameVal = (personal.fullName || personal.name || personal.full_name || "Your Full Name").trim();
+    const jobTitleVal = personal.jobTitle || personal.professionalTitle || "Software Engineer / Student";
+
+    return (
+      <Card className="min-h-[1123px] w-full bg-white p-12 shadow-none text-gray-900 font-sans aspect-[1/1.414]">
+        <header className="border-b-2 border-indigo-900 pb-4 mb-6 text-center">
+          <h1 className="text-3xl font-extrabold text-indigo-950 uppercase tracking-tight">{fullNameVal}</h1>
+          <p className="text-sm font-bold text-indigo-700 tracking-wider uppercase mt-1">{jobTitleVal}</p>
+          <div className="flex flex-wrap justify-center gap-x-4 gap-y-1 text-xs text-gray-600 mt-2 font-medium">
+            {personal.email && <span>Email: {personal.email}</span>}
+            {personal.phone && <span>Phone: {personal.phone}</span>}
+            {personal.github && <span>GitHub: {personal.github}</span>}
+            {personal.linkedin && <span>LinkedIn: {personal.linkedin}</span>}
+          </div>
+        </header>
+
+        {/* Education First for College Students */}
+        {hasData(educations) && (
+          <section className="mb-6">
+            <h2 className="text-xs font-bold uppercase tracking-wider text-indigo-950 border-b border-indigo-200 pb-1 mb-2">
+              Education & Academic Background
+            </h2>
+            <div className="space-y-2">
+              {educations.map((edu: any, idx: number) => (
+                <div key={idx} className="flex justify-between items-baseline">
+                  <div>
+                    <h3 className="text-xs font-bold text-gray-900">{edu.university || "College / University Name"}</h3>
+                    <p className="text-xs text-gray-700">{edu.degree} {edu.gpa ? `| GPA: ${edu.gpa}` : ''}</p>
+                  </div>
+                  <span className="text-[11px] font-bold text-indigo-700">{edu.from} – {edu.to || "Present"}</span>
+                </div>
+              ))}
+            </div>
+          </section>
+        )}
+
+        {skills.length > 0 && (
+          <section className="mb-6">
+            <h2 className="text-xs font-bold uppercase tracking-wider text-indigo-950 border-b border-indigo-200 pb-1 mb-2">
+              Technical & Core Skills
+            </h2>
+            <div className="flex flex-wrap gap-1.5">
+              {skills.map((s: string, idx: number) => (
+                <span key={idx} className="bg-indigo-50 border border-indigo-100 text-indigo-900 px-2 py-0.5 rounded text-[11px] font-semibold">
+                  {s}
+                </span>
+              ))}
+            </div>
+          </section>
+        )}
+
+        {hasData(projects) && (
+          <section className="mb-6">
+            <h2 className="text-xs font-bold uppercase tracking-wider text-indigo-950 border-b border-indigo-200 pb-1 mb-3">
+              Academic & Personal Projects
+            </h2>
+            <div className="space-y-3">
+              {projects.map((proj: any, idx: number) => (
+                <div key={idx} className="p-3 bg-gray-50 border border-gray-200 rounded-xl">
+                  <div className="flex justify-between items-baseline">
+                    <h3 className="text-xs font-bold text-indigo-950">{proj.name}</h3>
+                    <span className="text-[10px] text-gray-500 font-bold">{proj.from || proj.startDate} – {proj.to || proj.endDate || "Present"}</span>
+                  </div>
+                  {proj.role && <p className="text-[10px] font-bold text-indigo-600">{proj.role}</p>}
+                  <p className="text-xs text-gray-700 mt-1 leading-relaxed">{proj.desc || proj.description}</p>
+                </div>
+              ))}
+            </div>
+          </section>
+        )}
+
+        {hasData(experiences) && (
+          <section className="mb-6">
+            <h2 className="text-xs font-bold uppercase tracking-wider text-indigo-950 border-b border-indigo-200 pb-1 mb-3">
+              Internship & Work Experience
+            </h2>
+            <div className="space-y-3">
+              {experiences.map((exp: any, idx: number) => (
+                <div key={idx}>
+                  <div className="flex justify-between items-baseline">
+                    <h3 className="text-xs font-bold text-gray-900">{exp.role} <span className="font-normal text-gray-500">at</span> {exp.company}</h3>
+                    <span className="text-[11px] font-semibold text-gray-600">{exp.from} – {exp.to || "Present"}</span>
+                  </div>
+                  <p className="text-xs text-gray-700 mt-1 leading-relaxed">{exp.desc || exp.description}</p>
+                </div>
+              ))}
+            </div>
+          </section>
+        )}
+      </Card>
+    );
+  }
+
   // Fallback / Standard Templates: modern, minimal, academic
   const isMinimal = template === "minimal";
   const isModern = template === "modern";

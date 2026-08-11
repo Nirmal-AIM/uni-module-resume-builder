@@ -77,16 +77,17 @@ export function adaptResumeData(data: any) {
 
 export function normalizeTemplateKey(key: string): string {
   const k = (key || '').toLowerCase().trim();
-  if (k === 'richard-sanchez' || k === 'executive-navy' || k === 'executive navy' || k === 'ats-6') {
+  if (k === 'ats-6') return 'ats-6';
+  if (k === 'richard-sanchez' || k === 'executive-navy' || k === 'executive navy') {
     return 'modern-blue';
   }
-  if (k === 'zola-bekker' || k === 'warm-terracotta' || k === 'warm terracotta' || k === 'ats-2') {
+  if (k === 'zola-bekker' || k === 'warm-terracotta' || k === 'warm terracotta') {
     return 'minimalist-orange';
   }
-  if (k === 'drew-feig' || k === 'clean-modern' || k === 'clean teal' || k === 'ats-3') {
+  if (k === 'drew-feig' || k === 'clean-modern' || k === 'clean teal') {
     return 'clean-teal';
   }
-  if (k === 'laurice-moretti' || k === 'bold-minimal' || k === 'bold systems' || k === 'ats-4' || k === 'ats-5') {
+  if (k === 'laurice-moretti' || k === 'bold-minimal' || k === 'bold systems') {
     return 'bold-black';
   }
   if (k === 'minimal') return 'minimal';

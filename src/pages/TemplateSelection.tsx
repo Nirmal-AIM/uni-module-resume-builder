@@ -44,23 +44,33 @@ export type TemplateRecord = {
 
 // Target audience mapping per template_id / key
 const SUITED_MAPPING: Record<string, { suited: string; badge: string }> = {
+  'ats-6': { suited: 'Students, freshers & college grads', badge: '⭐ Recommended for Students' },
   'richard-sanchez': { suited: 'Marketing, sales & executive managers', badge: 'Popular' },
   'zola-bekker': { suited: 'Designers, strategists & creative roles', badge: 'Serif' },
   'laurice-moretti': { suited: 'Systems designers, IT & tech architects', badge: 'High Contrast' },
   'drew-feig': { suited: 'Corporate specialists & mid-level roles', badge: 'ATS Friendly' },
   'ats-1': { suited: 'General professional applications', badge: 'ATS 100%' },
   'ats-2': { suited: 'Experienced professionals with projects', badge: 'Projects & Career' },
-  'ats-[#3]': { suited: 'Experienced / corporate roles', badge: 'Corporate ATS' },
   'ats-3': { suited: 'Experienced / corporate roles', badge: 'Corporate ATS' },
   'ats-4': { suited: 'Engineering & technical roles', badge: 'Tech & Engineering' },
   'ats-5': { suited: 'Experienced professionals & leadership', badge: 'Leadership ATS' },
-  'ats-6': { suited: 'Students & freshers', badge: 'Freshers & Students' },
 };
 
 // Fallback list of 10 templates matching Supabase DB schema
 const ALL_10_TEMPLATES: TemplateRecord[] = [
   {
     id: 1,
+    key: 'ats-6',
+    name: 'ATS Graduate',
+    description: '100% ATS-optimized resume template specifically tailored for college students, freshers, and interns.',
+    category: 'ATS Optimized',
+    badge: '⭐ Recommended for Students',
+    best_suited_for: 'Students, freshers & college grads',
+    preview_url: '/templates/ATS6.jpg',
+    is_active: true,
+  },
+  {
+    id: 2,
     key: 'richard-sanchez',
     name: 'Executive Navy',
     description: 'Dark navy sidebar layout with avatar, timeline experience, and reference section.',
@@ -71,7 +81,7 @@ const ALL_10_TEMPLATES: TemplateRecord[] = [
     is_active: true,
   },
   {
-    id: 2,
+    id: 3,
     key: 'zola-bekker',
     name: 'Warm Terracotta',
     description: 'Elegant terracotta serif typography with horizontal dividers and academic history grid.',
@@ -82,7 +92,7 @@ const ALL_10_TEMPLATES: TemplateRecord[] = [
     is_active: true,
   },
   {
-    id: 3,
+    id: 4,
     key: 'laurice-moretti',
     name: 'Bold Systems',
     description: 'High-contrast bold sans-serif header with clean single-column corporate bullet sections.',
@@ -93,7 +103,7 @@ const ALL_10_TEMPLATES: TemplateRecord[] = [
     is_active: true,
   },
   {
-    id: 4,
+    id: 5,
     key: 'drew-feig',
     name: 'Clean Teal',
     description: 'Teal header accents with horizontal pipe contact bar and right-aligned italic dates.',
@@ -104,7 +114,7 @@ const ALL_10_TEMPLATES: TemplateRecord[] = [
     is_active: true,
   },
   {
-    id: 5,
+    id: 6,
     key: 'ats-1',
     name: 'ATS Classic',
     description: 'Clean ATS-optimized single-column layout for maximum scanner parsing rate.',
@@ -115,7 +125,7 @@ const ALL_10_TEMPLATES: TemplateRecord[] = [
     is_active: true,
   },
   {
-    id: 6,
+    id: 7,
     key: 'ats-2',
     name: 'ATS Career',
     description: 'Structured ATS template with high-density experience and key project sections.',
@@ -126,7 +136,7 @@ const ALL_10_TEMPLATES: TemplateRecord[] = [
     is_active: true,
   },
   {
-    id: 7,
+    id: 8,
     key: 'ats-3',
     name: 'ATS Professional',
     description: 'Corporate ATS resume format tailored for experienced and corporate industry roles.',
@@ -137,7 +147,7 @@ const ALL_10_TEMPLATES: TemplateRecord[] = [
     is_active: true,
   },
   {
-    id: 8,
+    id: 9,
     key: 'ats-4',
     name: 'ATS Engineering',
     description: 'High-parser ATS template designed specifically for technical and engineering positions.',
@@ -148,7 +158,7 @@ const ALL_10_TEMPLATES: TemplateRecord[] = [
     is_active: true,
   },
   {
-    id: 9,
+    id: 10,
     key: 'ats-5',
     name: 'ATS Executive',
     description: 'Refined ATS structure tailored for senior management, leadership, and executive roles.',
@@ -156,17 +166,6 @@ const ALL_10_TEMPLATES: TemplateRecord[] = [
     badge: 'Leadership ATS',
     best_suited_for: 'Experienced professionals & leadership',
     preview_url: '/templates/ATS5.jpg',
-    is_active: true,
-  },
-  {
-    id: 10,
-    key: 'ats-6',
-    name: 'ATS Graduate',
-    description: 'Fresh single-column ATS layout perfectly tailored for students, interns, and freshers.',
-    category: 'ATS Optimized',
-    badge: 'Freshers & Students',
-    best_suited_for: 'Students & freshers',
-    preview_url: '/templates/ATS6.jpg',
     is_active: true,
   },
 ];
@@ -265,7 +264,7 @@ export function TemplateSelection() {
   const [loading, setLoading] = useState<boolean>(true);
   const [error, setError] = useState<string | null>(null);
 
-  const [selectedTemplateKey, setSelectedTemplateKey] = useState<string>('richard-sanchez');
+  const [selectedTemplateKey, setSelectedTemplateKey] = useState<string>('ats-6');
   const [previewModalTemplate, setPreviewModalTemplate] = useState<TemplateRecord | null>(null);
 
   const [selectedRoleFilter, setSelectedRoleFilter] = useState<string>('all');
