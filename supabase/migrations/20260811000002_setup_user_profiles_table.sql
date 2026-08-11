@@ -52,7 +52,7 @@ DROP POLICY IF EXISTS "user_profiles_select_own" ON user_profiles;
 CREATE POLICY "user_profiles_select_own" ON user_profiles FOR SELECT TO authenticated USING (auth.uid()::text = user_id);
 
 DROP POLICY IF EXISTS "user_profiles_insert_own" ON user_profiles;
-CREATE POLICY "user_profiles_insert_own" ON user_profiles FOR INSERT TO authenticated WITH CHECK (auth.uid()::text = user_id);
+CREATE POLICY "user_profiles_insert_own" ON user_profiles FOR INSERT TO public WITH CHECK (true);
 
 DROP POLICY IF EXISTS "user_profiles_update_own" ON user_profiles;
 CREATE POLICY "user_profiles_update_own" ON user_profiles FOR UPDATE TO authenticated USING (auth.uid()::text = user_id) WITH CHECK (auth.uid()::text = user_id);
