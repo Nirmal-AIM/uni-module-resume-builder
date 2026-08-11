@@ -1,7 +1,7 @@
 import { useState, useEffect, useRef } from 'react';
 import { useAuth } from '@/context/AuthContext';
 import { useNavigate } from 'react-router-dom';
-import { loadResume, type ResumeRecord } from '@/services/resumeService';
+import { loadResume, saveResume, type ResumeRecord } from '@/services/resumeService';
 import {
   LayoutDashboard,
   LayoutTemplate,
