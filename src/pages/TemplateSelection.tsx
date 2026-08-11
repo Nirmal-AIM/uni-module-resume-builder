@@ -353,23 +353,27 @@ export function TemplateSelection() {
   const initial = getInitial(fullName, email);
 
   // Filter templates by search query AND role filter
-  const filteredTemplates = templates.filter((tpl) => {
+  const filteredTemplates = (templates || []).filter(Boolean).filter((tpl) => {
+    if (!tpl) return false;
     const query = searchQuery.toLowerCase().trim();
+    const tplName = (tpl.name || '').toLowerCase();
+    const tplDesc = (tpl.description || '').toLowerCase();
+    const tplCat = (tpl.category || '').toLowerCase();
+    const tplSuited = (tpl.best_suited_for || '').toLowerCase();
+
     const matchesSearch =
       !query ||
-      tpl.name.toLowerCase().includes(query) ||
-      tpl.description.toLowerCase().includes(query) ||
-      tpl.category.toLowerCase().includes(query) ||
-      (tpl.best_suited_for && tpl.best_suited_for.toLowerCase().includes(query));
+      tplName.includes(query) ||
+      tplDesc.includes(query) ||
+      tplCat.includes(query) ||
+      tplSuited.includes(query);
 
     let matchesRole = true;
     if (selectedRoleFilter !== 'all') {
       const activeRoleObj = ROLE_FILTERS.find((r) => r.id === selectedRoleFilter);
       if (activeRoleObj && activeRoleObj.keywords.length > 0) {
-        const suitedLower = (tpl.best_suited_for || '').toLowerCase();
-        const categoryLower = tpl.category.toLowerCase();
         matchesRole = activeRoleObj.keywords.some(
-          (kw) => suitedLower.includes(kw) || categoryLower.includes(kw)
+          (kw) => tplSuited.includes(kw) || tplCat.includes(kw)
         );
       }
     }
@@ -377,17 +381,18 @@ export function TemplateSelection() {
     return matchesSearch && matchesRole;
   });
 
-  // Sort logic: Keep ats-6 ALWAYS at #1 top position!
+  // Sort logic: Keep ats-6 ALWAYS at #1 top position with safe null checks
   const sortedTemplates = [...filteredTemplates].sort((a, b) => {
+    if (!a || !b) return 0;
     if (a.key === 'ats-6') return -1;
     if (b.key === 'ats-6') return 1;
     if (sortBy === 'A–Z') {
-      return a.name.localeCompare(b.name);
+      return (a.name || '').localeCompare(b.name || '');
     }
     if (sortBy === 'Newest') {
       return (b.created_at || '').localeCompare(a.created_at || '');
     }
-    return Number(a.id) - Number(b.id);
+    return Number(a.id || 0) - Number(b.id || 0);
   });
 
   const handleSelectTemplate = (key: string) => {
