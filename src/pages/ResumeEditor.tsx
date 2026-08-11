@@ -36,6 +36,12 @@ const SIDEBAR_SECTIONS = [
 ];
 
 const TEMPLATE_OPTIONS = [
+  { id: "ats-6", name: "ATS Graduate (⭐ Recommended for Students)" },
+  { id: "ats-1", name: "ATS Classic (100% ATS)" },
+  { id: "ats-2", name: "ATS Career & Projects" },
+  { id: "ats-3", name: "ATS Professional Executive" },
+  { id: "ats-4", name: "ATS Engineering & Tech" },
+  { id: "ats-5", name: "ATS Leadership Executive" },
   { id: "modern-blue", name: "Executive Navy (Richard Sanchez)" },
   { id: "minimalist-orange", name: "Warm Terracotta (Zola Bekker)" },
   { id: "clean-teal", name: "Clean Teal (Drew Feig)" },
@@ -46,7 +52,8 @@ export function ResumeEditor() {
   const navigate = useNavigate();
   const [searchParams] = useSearchParams();
   const { user, profile, logout } = useAuth();
-  const initialTemplate = searchParams.get("template") || "modern-blue";
+  const urlTemplate = searchParams.get("template");
+  const initialTemplate = urlTemplate || "ats-6";
 
   const [activeSection, setActiveSection] = useState<string | null>("personal");
   const [selectedTemplate, setSelectedTemplate] = useState<string>(initialTemplate);
@@ -86,7 +93,12 @@ export function ResumeEditor() {
         if (!active) return;
         if (record) {
           if (record.title) setResumeTitle(record.title);
-          if (record.template_key) setSelectedTemplate(record.template_key);
+          // If URL param exists, use URL param; otherwise use record's template
+          if (urlTemplate) {
+            setSelectedTemplate(urlTemplate);
+          } else if (record.template_key) {
+            setSelectedTemplate(record.template_key);
+          }
           if (record.resume_data && typeof record.resume_data === "object") {
             setResumeData((prev: any) => ({
               ...prev,
