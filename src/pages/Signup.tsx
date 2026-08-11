@@ -1,3 +1,5 @@
-import { Login } from './Login';
+import { AuthCard } from '@/components/AuthCard';
 
-export function Signup() { return <Login />; }
+export function Signup() {
+  return <AuthCard initialMode="signup" />;
+}

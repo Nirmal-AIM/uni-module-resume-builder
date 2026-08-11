@@ -35,6 +35,43 @@ function friendlyError(message: string): string {
   return 'Something went wrong. Please try again.';
 }
 
+export async function signInWithPassword(email: string, password: string): Promise<AuthResult> {
+  const { data, error } = await supabase.auth.signInWithPassword({ email, password });
+  if (error) {
+    return { success: false, error: friendlyError(error.message) };
+  }
+  if (data.user) {
+    await initializeUserProfile(data.user);
+  }
+  return { success: true };
+}
+
+export async function signUpWithPassword(email: string, password: string, fullName: string): Promise<AuthResult> {
+  const { data, error } = await supabase.auth.signUp({
+    email,
+    password,
+    options: {
+      data: {
+        full_name: fullName,
+      },
+    },
+  });
+  if (error) {
+    return { success: false, error: friendlyError(error.message) };
+  }
+  if (data.user) {
+    await initializeUserProfile(data.user);
+  }
+  return { success: true };
+}
+
+export async function sendForgotPasswordReset(email: string): Promise<AuthResult> {
+  const { error } = await supabase.auth.resetPasswordForEmail(email, {
+    redirectTo: window.location.origin + '/dashboard',
+  });
+  return error ? { success: false, error: friendlyError(error.message) } : { success: true };
+}
+
 export async function sendEmailOtp(email: string): Promise<AuthResult> {
   const { error } = await supabase.auth.signInWithOtp({
     email,
