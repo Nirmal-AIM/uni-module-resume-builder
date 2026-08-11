@@ -51,9 +51,12 @@ const faqs = [
   },
 ];
 
+import { useAIAssistant } from '@/context/AIAssistantContext';
+
 export function HelpSupport() {
   const { user, profile, logout } = useAuth();
   const navigate = useNavigate();
+  const { openAIAssistant } = useAIAssistant();
   const [userMenuOpen, setUserMenuOpen] = useState(false);
   const [searchQuery, setSearchQuery] = useState('');
   const [openFaq, setOpenFaq] = useState<number | null>(0);
@@ -91,7 +94,15 @@ export function HelpSupport() {
               <button
                 key={item.id}
                 type="button"
-                onClick={() => navigate(item.path)}
+                onClick={() => {
+                  if (item.id === 'ai-assistant') {
+                    openAIAssistant();
+                    return;
+                  }
+                  if (item.path && item.path !== '#') {
+                    navigate(item.path);
+                  }
+                }}
                 className={`flex items-center gap-3.5 rounded-xl px-4 py-3 text-sm font-medium transition-all ${
                   isActive
                     ? 'bg-[#153459] text-white shadow-sm font-semibold'

@@ -26,6 +26,7 @@ import {
   User,
   HelpCircle,
 } from 'lucide-react';
+import { useAIAssistant } from '@/context/AIAssistantContext';
 
 export type TemplateRecord = {
   id: string | number;
@@ -258,6 +259,7 @@ function TemplateSkeletonCard() {
 export function TemplateSelection() {
   const { user, profile, logout } = useAuth();
   const navigate = useNavigate();
+  const { openAIAssistant } = useAIAssistant();
 
   const [templates, setTemplates] = useState<TemplateRecord[]>([]);
   const [loading, setLoading] = useState<boolean>(true);
@@ -411,6 +413,10 @@ export function TemplateSelection() {
                 key={item.id}
                 type="button"
                 onClick={() => {
+                  if (item.id === 'ai-assistant') {
+                    openAIAssistant();
+                    return;
+                  }
                   if (item.path && item.path !== '#') {
                     navigate(item.path);
                   }

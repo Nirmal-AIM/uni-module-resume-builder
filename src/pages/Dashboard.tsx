@@ -30,6 +30,7 @@ import {
   Loader2,
 } from 'lucide-react';
 import { reviewResumeContent, askAIAssistant, type AIResumeReviewResult } from '@/services/aiService';
+import { useAIAssistant } from '@/context/AIAssistantContext';
 
 const sidebarItems = [
   { id: 'dashboard', label: 'Dashboard', icon: LayoutDashboard, path: '/dashboard' },
@@ -145,8 +146,14 @@ export function Dashboard() {
   const initial = getInitial(fullName, email);
   const greeting = getGreeting();
 
+  const { openAIAssistant } = useAIAssistant();
+
   const handleSidebarClick = (item: typeof sidebarItems[0]) => {
     setActiveTab(item.id);
+    if (item.id === 'ai-assistant') {
+      openAIAssistant();
+      return;
+    }
     if (item.path && item.path !== '#') {
       navigate(item.path);
     }

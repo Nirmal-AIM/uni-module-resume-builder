@@ -32,9 +32,12 @@ const sidebarItems = [
   { id: 'help-support', label: 'Help & Support', icon: HelpCircle, path: '/help-support' },
 ];
 
+import { useAIAssistant } from '@/context/AIAssistantContext';
+
 export function CoverLetters() {
   const { user, profile, logout } = useAuth();
   const navigate = useNavigate();
+  const { openAIAssistant } = useAIAssistant();
   const [userMenuOpen, setUserMenuOpen] = useState(false);
 
   // Form State
@@ -96,7 +99,15 @@ export function CoverLetters() {
               <button
                 key={item.id}
                 type="button"
-                onClick={() => navigate(item.path)}
+                onClick={() => {
+                  if (item.id === 'ai-assistant') {
+                    openAIAssistant();
+                    return;
+                  }
+                  if (item.path && item.path !== '#') {
+                    navigate(item.path);
+                  }
+                }}
                 className={`flex items-center gap-3.5 rounded-xl px-4 py-3 text-sm font-medium transition-all ${
                   isActive
                     ? 'bg-[#153459] text-white shadow-sm font-semibold'
