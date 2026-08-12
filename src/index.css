@@ -19,7 +19,14 @@ button, input { font: inherit; }
 @media (max-width: 1023px) { .brand-panel { min-height: auto; } .brand-glow-one { left: 35%; top: -40%; } .brand-glow-two { left: -20%; top: 15%; } }
 @media (max-width: 639px) { .brand-panel { padding-top: 28px; padding-bottom: 36px; } .brand-panel .brand-glow { opacity: .1; } .brand-panel::after { inset: 0; } }
 
-/* ── High-Fidelity Print & PDF Styles (Restored from uni-module-resume-builder) ── */
+/* ── High-Fidelity Print & PDF Styles ── */
+#resume-content section,
+#resume-content .resume-section,
+#resume-content .break-inside-avoid {
+  break-inside: avoid !important;
+  page-break-inside: avoid !important;
+}
+
 @media print {
   @page {
     size: A4 portrait;
@@ -67,6 +74,13 @@ button, input { font: inherit; }
     left: 0 !important;
     top: 0 !important;
     z-index: 999999 !important;
+  }
+
+  section,
+  .resume-section,
+  .break-inside-avoid {
+    break-inside: avoid !important;
+    page-break-inside: avoid !important;
   }
 
   /* Reset layout containers for clean output */

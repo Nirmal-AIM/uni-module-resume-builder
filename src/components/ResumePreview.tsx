@@ -650,7 +650,7 @@ export function ResumePreview({ data = {}, template = "modern" }: { data: any; t
 
         {/* Profile / Professional Summary */}
         {Boolean(summaryText || safeData.summary?.text || safeData.summary?.summary || (typeof safeData.summary === 'string' ? safeData.summary : '')) && (
-          <section className="mb-6">
+          <section className="mb-6 break-inside-avoid">
             <h2 className="text-xs font-bold uppercase tracking-wider text-indigo-950 border-b border-indigo-200 pb-1 mb-2">
               Professional Summary
             </h2>
@@ -662,13 +662,13 @@ export function ResumePreview({ data = {}, template = "modern" }: { data: any; t
 
         {/* Education First for College Students */}
         {hasData(educations) && (
-          <section className="mb-6">
+          <section className="mb-6 break-inside-avoid">
             <h2 className="text-xs font-bold uppercase tracking-wider text-indigo-950 border-b border-indigo-200 pb-1 mb-2">
               Education & Academic Background
             </h2>
             <div className="space-y-2">
               {educations.map((edu: any, idx: number) => (
-                <div key={idx} className="flex justify-between items-baseline">
+                <div key={idx} className="flex justify-between items-baseline break-inside-avoid">
                   <div>
                     <h3 className="text-xs font-bold text-gray-900">{edu.university || "College / University Name"}</h3>
                     <p className="text-xs text-gray-700">{edu.degree} {edu.gpa ? `| GPA: ${edu.gpa}` : ''}</p>
@@ -681,7 +681,7 @@ export function ResumePreview({ data = {}, template = "modern" }: { data: any; t
         )}
 
         {skills.length > 0 && (
-          <section className="mb-6">
+          <section className="mb-6 break-inside-avoid">
             <h2 className="text-xs font-bold uppercase tracking-wider text-indigo-950 border-b border-indigo-200 pb-1 mb-2">
               Technical & Core Skills
             </h2>
@@ -696,13 +696,13 @@ export function ResumePreview({ data = {}, template = "modern" }: { data: any; t
         )}
 
         {hasData(projects) && (
-          <section className="mb-6">
+          <section className="mb-6 break-inside-avoid">
             <h2 className="text-xs font-bold uppercase tracking-wider text-indigo-950 border-b border-indigo-200 pb-1 mb-3">
               Academic & Personal Projects
             </h2>
             <div className="space-y-3">
               {projects.map((proj: any, idx: number) => (
-                <div key={idx} className="p-3 bg-gray-50 border border-gray-200 rounded-xl">
+                <div key={idx} className="p-3 bg-gray-50 border border-gray-200 rounded-xl break-inside-avoid">
                   <div className="flex justify-between items-baseline">
                     <h3 className="text-xs font-bold text-indigo-950">{proj.name}</h3>
                     <span className="text-[10px] text-gray-500 font-bold">{proj.from || proj.startDate} – {proj.to || proj.endDate || "Present"}</span>
@@ -716,13 +716,13 @@ export function ResumePreview({ data = {}, template = "modern" }: { data: any; t
         )}
 
         {hasData(experiences) && (
-          <section className="mb-6">
+          <section className="mb-6 break-inside-avoid">
             <h2 className="text-xs font-bold uppercase tracking-wider text-indigo-950 border-b border-indigo-200 pb-1 mb-3">
               Internship & Work Experience
             </h2>
             <div className="space-y-3">
               {experiences.map((exp: any, idx: number) => (
-                <div key={idx}>
+                <div key={idx} className="break-inside-avoid">
                   <div className="flex justify-between items-baseline">
                     <h3 className="text-xs font-bold text-gray-900">{exp.role} <span className="font-normal text-gray-500">at</span> {exp.company}</h3>
                     <span className="text-[11px] font-semibold text-gray-600">{exp.from} – {exp.to || "Present"}</span>
@@ -735,7 +735,7 @@ export function ResumePreview({ data = {}, template = "modern" }: { data: any; t
         )}
 
         {hasData(certificates) && (
-          <section className="mb-6">
+          <section className="mb-6 break-inside-avoid">
             <h2 className="text-xs font-bold uppercase tracking-wider text-indigo-950 border-b border-indigo-200 pb-1 mb-2">
               Certifications & Credentials
             </h2>
@@ -746,7 +746,7 @@ export function ResumePreview({ data = {}, template = "modern" }: { data: any; t
                 const date = cert.date || cert.issueDate || cert.year || '';
                 if (!title && !issuer && !date) return null;
                 return (
-                  <div key={idx} className="flex justify-between items-baseline">
+                  <div key={idx} className="flex justify-between items-baseline break-inside-avoid">
                     <div>
                       <h3 className="text-xs font-bold text-gray-900">{title}</h3>
                       {issuer && (
@@ -766,7 +766,7 @@ export function ResumePreview({ data = {}, template = "modern" }: { data: any; t
         )}
 
         {hasData(languages) && (
-          <section className="mb-6">
+          <section className="mb-6 break-inside-avoid">
             <h2 className="text-xs font-bold uppercase tracking-wider text-indigo-950 border-b border-indigo-200 pb-1 mb-2">
               Languages
             </h2>

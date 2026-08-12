@@ -141,10 +141,34 @@ export function ResumeEditor() {
     return () => clearTimeout(timer);
   }, [resumeData, selectedTemplate, resumeTitle, isInitialLoaded, user]);
 
-  const handleExportPDF = () => {
-    document.body.classList.add("printing-resume");
-    window.print();
-    document.body.classList.remove("printing-resume");
+  const handleExportPDF = async () => {
+    const element = document.getElementById("resume-content");
+    if (!element) {
+      window.print();
+      return;
+    }
+
+    try {
+      const html2pdfModule = await import("html2pdf.js");
+      const html2pdf = html2pdfModule.default || html2pdfModule;
+      const fileName = `${(resumeTitle || "Resume").trim().replace(/\s+/g, "_")}.pdf`;
+
+      const opt = {
+        margin: 0,
+        filename: fileName,
+        image: { type: "jpeg", quality: 0.98 },
+        html2canvas: { scale: 2, useCORS: true, logging: false },
+        jsPDF: { unit: "mm", format: "a4", orientation: "portrait" },
+        pagebreak: { mode: ["avoid-all", "css", "legacy"] }
+      };
+
+      await html2pdf().set(opt).from(element).save();
+    } catch (err) {
+      console.warn("html2pdf fallback to window.print():", err);
+      document.body.classList.add("printing-resume");
+      window.print();
+      document.body.classList.remove("printing-resume");
+    }
   };
 
   const handleLogout = async () => {
