@@ -54,9 +54,10 @@ export function ResumePreview({ data = {}, template = "modern" }: { data: any; t
   const hasData = (arr: any[]) =>
     Array.isArray(arr) &&
     arr.some((item) => {
+      if (!item) return false;
       if (typeof item === 'string') return item.trim().length > 0;
-      if (typeof item === 'object' && item !== null) {
-        return Object.entries(item).some(([k, v]) => k !== 'id' && typeof v === 'string' && v.trim().length > 0);
+      if (typeof item === 'object') {
+        return Object.values(item).some((v) => typeof v === 'string' && v.trim().length > 0);
       }
       return false;
     });
@@ -673,19 +674,21 @@ export function ResumePreview({ data = {}, template = "modern" }: { data: any; t
             </h2>
             <div className="space-y-2">
               {certificates.map((cert: any, idx: number) => {
-                const certName = cert.title || cert.name || cert.certificateName || cert.certName;
-                if (!certName) return null;
+                const title = cert.title || cert.name || cert.certificateName || cert.certName || cert.issuer || cert.organization || '';
+                const issuer = cert.issuer || cert.organization || cert.org || cert.issuingOrganization || '';
+                const date = cert.date || cert.issueDate || cert.year || '';
+                if (!title && !issuer && !date) return null;
                 return (
                   <div key={idx} className="flex justify-between items-baseline">
                     <div>
-                      <h3 className="text-xs font-bold text-gray-900">{certName}</h3>
-                      {(cert.issuer || cert.organization) && (
-                        <p className="text-[11px] text-gray-600">{cert.issuer || cert.organization}</p>
+                      <h3 className="text-xs font-bold text-gray-900">{title}</h3>
+                      {issuer && title !== issuer && (
+                        <p className="text-[11px] text-gray-600">{issuer}</p>
                       )}
                     </div>
-                    {(cert.date || cert.issueDate || cert.year) && (
+                    {date && (
                       <span className="text-[11px] font-semibold text-indigo-700">
-                        {cert.date || cert.issueDate || cert.year}
+                        {date}
                       </span>
                     )}
                   </div>
@@ -702,12 +705,12 @@ export function ResumePreview({ data = {}, template = "modern" }: { data: any; t
             </h2>
             <div className="flex flex-wrap gap-2">
               {languages.map((lang: any, idx: number) => {
-                const name = typeof lang === 'string' ? lang : lang.name || lang.language;
-                const proficiency = typeof lang === 'object' ? lang.proficiency || lang.level : '';
-                if (!name) return null;
+                const name = typeof lang === 'string' ? lang : lang.name || lang.language || lang.level || '';
+                const proficiency = typeof lang === 'object' ? lang.proficiency || lang.level || '' : '';
+                if (!name && !proficiency) return null;
                 return (
                   <span key={idx} className="bg-gray-100 border border-gray-200 text-gray-800 px-2.5 py-1 rounded text-[11px] font-semibold">
-                    {name} {proficiency ? `(${proficiency})` : ''}
+                    {name} {proficiency && name !== proficiency ? `(${proficiency})` : ''}
                   </span>
                 );
               })}
