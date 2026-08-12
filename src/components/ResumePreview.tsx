@@ -30,22 +30,36 @@ export function ResumePreview({ data = {}, template = "modern" }: { data: any; t
   
   const projects = Array.isArray(safeData.projects) ? safeData.projects : [];
   const languages = Array.isArray(safeData.languages) ? safeData.languages : [];
-  const certificates = Array.isArray(safeData.certificates)
+  
+  const rawCerts = Array.isArray(safeData.certificates)
     ? safeData.certificates
     : Array.isArray(safeData.certifications)
-    ? safeData.certifications.map((c: any) => ({
-        title: c.name || c.title || '',
-        issuer: c.issuer || '',
-        date: c.issueDate || c.date || '',
-      }))
+    ? safeData.certifications
     : [];
+
+  const certificates = rawCerts.map((c: any) => {
+    if (typeof c === 'string') return { title: c, issuer: '', date: '' };
+    return {
+      title: c.title || c.name || c.certificateName || c.certName || '',
+      issuer: c.issuer || c.organization || c.org || c.issuingOrganization || '',
+      date: c.date || c.issueDate || c.year || '',
+    };
+  });
 
   const summaryText = typeof safeData.summary === 'string'
     ? safeData.summary
     : safeData.summary?.text || '';
 
   // Helper to render sections only if they have data
-  const hasData = (arr: any[]) => arr && arr.length > 0 && Object.values(arr[0] || {}).some((v) => v !== "" && v !== null && v !== undefined);
+  const hasData = (arr: any[]) =>
+    Array.isArray(arr) &&
+    arr.some((item) => {
+      if (typeof item === 'string') return item.trim().length > 0;
+      if (typeof item === 'object' && item !== null) {
+        return Object.entries(item).some(([k, v]) => k !== 'id' && typeof v === 'string' && v.trim().length > 0);
+      }
+      return false;
+    });
 
   // Template Styles: modern-blue (Executive Navy / Richard Sanchez)
   if (template === "modern-blue" || template === "executive-navy" || template === "executive navy" || template === "richard-sanchez") {
@@ -501,16 +515,46 @@ export function ResumePreview({ data = {}, template = "modern" }: { data: any; t
         )}
 
         {hasData(certificates) && (
-          <section>
+          <section className="mt-4">
             <h2 className="text-base font-black uppercase tracking-wider mb-4 border-t-2 border-black pt-4">
-              Certificates
+              Certificates & Credentials
             </h2>
-            <div className="flex flex-wrap gap-x-8 gap-y-2">
-              {certificates.map((cert: any, idx: number) => (
-                <div key={idx}>
-                  <h3 className="text-xs font-bold">{cert.title || cert.name}</h3>
-                </div>
-              ))}
+            <div className="space-y-3">
+              {certificates.map((cert: any, idx: number) => {
+                const title = cert.title || cert.name || cert.certificateName || '';
+                const issuer = cert.issuer || cert.organization || cert.org || '';
+                const date = cert.date || cert.issueDate || cert.year || '';
+                if (!title && !issuer) return null;
+                return (
+                  <div key={idx} className="flex justify-between items-baseline border-b border-gray-100 pb-1">
+                    <div>
+                      <h3 className="text-xs font-bold text-gray-900">{title}</h3>
+                      {issuer && <p className="text-[11px] text-gray-600">{issuer}</p>}
+                    </div>
+                    {date && <span className="text-[11px] font-semibold text-gray-500">{date}</span>}
+                  </div>
+                );
+              })}
+            </div>
+          </section>
+        )}
+
+        {hasData(languages) && (
+          <section className="mt-4">
+            <h2 className="text-base font-black uppercase tracking-wider mb-3 border-t-2 border-black pt-4">
+              Languages
+            </h2>
+            <div className="flex flex-wrap gap-2">
+              {languages.map((lang: any, idx: number) => {
+                const name = typeof lang === 'string' ? lang : lang.name || lang.language;
+                const level = typeof lang === 'object' ? lang.level || lang.proficiency : '';
+                if (!name) return null;
+                return (
+                  <span key={idx} className="bg-gray-100 border border-gray-200 text-gray-800 px-2.5 py-1 rounded text-xs font-semibold">
+                    {name} {level ? `(${level})` : ''}
+                  </span>
+                );
+              })}
             </div>
           </section>
         )}
