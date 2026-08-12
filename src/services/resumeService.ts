@@ -179,6 +179,8 @@ export async function saveResume(payload: ResumeSavePayload): Promise<ResumeReco
       email: p.email || user.email || '',
       location: p.address || p.location || '',
       website: p.website || p.portfolio || '',
+      linkedin: p.linkedin || '',
+      github: p.github || '',
       country: p.country || '',
       street_address: p.address || p.location || '',
       profile_image: p.profileImage || '',
