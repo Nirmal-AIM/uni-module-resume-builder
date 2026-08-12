@@ -139,12 +139,17 @@ export function ResumePreview({ data = {}, template = "modern" }: { data: any; t
                 Languages
               </h2>
               <ul className="space-y-1 text-[10px] opacity-90">
-                {languages.map((lang: any, idx: number) => (
-                  <li key={idx} className="flex justify-between">
-                    <span>{lang.name}</span>
-                    <span className="opacity-60 italic">({lang.level})</span>
-                  </li>
-                ))}
+                {languages.map((lang: any, idx: number) => {
+                  const name = typeof lang === 'string' ? lang : lang.name || lang.language || '';
+                  const level = typeof lang === 'object' ? lang.level || lang.proficiency || '' : '';
+                  if (!name && !level) return null;
+                  return (
+                    <li key={idx} className="flex justify-between">
+                      <span className="font-semibold">{name}</span>
+                      {level && <span className="opacity-75 italic">({level})</span>}
+                    </li>
+                  );
+                })}
               </ul>
             </section>
           )}
@@ -325,13 +330,43 @@ export function ResumePreview({ data = {}, template = "modern" }: { data: any; t
         )}
 
         {hasData(certificates) && (
-          <section>
-            <h2 className="text-lg font-medium italic border-b border-[#c05621]/30 pb-2 mb-4">Certificates</h2>
-            <ul className="list-disc pl-4 text-[10px] space-y-1 text-gray-800 font-sans">
-              {certificates.map((cert: any, idx: number) => (
-                <li key={idx}>{cert.title || cert.name}</li>
-              ))}
-            </ul>
+          <section className="mb-6">
+            <h2 className="text-lg font-medium italic border-b border-[#c05621]/30 pb-2 mb-4">Certificates & Credentials</h2>
+            <div className="space-y-3 font-sans">
+              {certificates.map((cert: any, idx: number) => {
+                const title = cert.title || cert.name || cert.certificateName || cert.certName || cert.issuer || cert.organization || '';
+                const issuer = cert.issuer || cert.organization || cert.org || cert.issuingOrganization || '';
+                const date = cert.date || cert.issueDate || cert.year || '';
+                if (!title && !issuer && !date) return null;
+                return (
+                  <div key={idx} className="flex justify-between items-baseline border-b border-gray-100 pb-1">
+                    <div>
+                      <h3 className="text-xs font-bold text-gray-900">{title}</h3>
+                      {issuer && <p className="text-[10px] text-gray-600 font-medium">{issuer}</p>}
+                    </div>
+                    {date && <span className="text-[10px] text-gray-500">{date}</span>}
+                  </div>
+                );
+              })}
+            </div>
+          </section>
+        )}
+
+        {hasData(languages) && (
+          <section className="mb-6 font-sans">
+            <h2 className="text-lg font-medium italic border-b border-[#c05621]/30 pb-2 mb-4">Languages</h2>
+            <div className="flex flex-wrap gap-2">
+              {languages.map((lang: any, idx: number) => {
+                const name = typeof lang === 'string' ? lang : lang.name || lang.language || '';
+                const level = typeof lang === 'object' ? lang.level || lang.proficiency || '' : '';
+                if (!name && !level) return null;
+                return (
+                  <span key={idx} className="bg-orange-50 text-[#c05621] border border-orange-100 px-3 py-1 rounded text-xs font-semibold">
+                    {name} {level ? `(${level})` : ''}
+                  </span>
+                );
+              })}
+            </div>
           </section>
         )}
       </Card>
@@ -439,19 +474,49 @@ export function ResumePreview({ data = {}, template = "modern" }: { data: any; t
         )}
 
         {hasData(certificates) && (
-          <section>
+          <section className="mb-10">
             <div className="flex items-center gap-4 mb-4">
-              <h2 className="text-sm font-bold text-[#2c7a7b] whitespace-nowrap">Certificates</h2>
+              <h2 className="text-sm font-bold text-[#2c7a7b] whitespace-nowrap">Certificates & Credentials</h2>
               <div className="w-full h-px bg-[#2c7a7b]/30"></div>
             </div>
-            <ul className="grid grid-cols-2 gap-y-2 text-xs">
-              {certificates.map((cert: any, idx: number) => (
-                <li key={idx} className="flex items-center gap-2">
-                  <div className="w-1 h-1 rounded-full bg-[#2c7a7b]"></div>
-                  {cert.title || cert.name}
-                </li>
-              ))}
-            </ul>
+            <div className="space-y-3">
+              {certificates.map((cert: any, idx: number) => {
+                const title = cert.title || cert.name || cert.certificateName || cert.certName || cert.issuer || cert.organization || '';
+                const issuer = cert.issuer || cert.organization || cert.org || cert.issuingOrganization || '';
+                const date = cert.date || cert.issueDate || cert.year || '';
+                if (!title && !issuer && !date) return null;
+                return (
+                  <div key={idx} className="flex justify-between items-baseline border-b border-gray-100 pb-1">
+                    <div>
+                      <h3 className="text-xs font-bold text-gray-900">{title}</h3>
+                      {issuer && <p className="text-[10px] text-gray-600 font-medium">{issuer}</p>}
+                    </div>
+                    {date && <span className="text-[10px] text-gray-500">{date}</span>}
+                  </div>
+                );
+              })}
+            </div>
+          </section>
+        )}
+
+        {hasData(languages) && (
+          <section className="mb-10">
+            <div className="flex items-center gap-4 mb-4">
+              <h2 className="text-sm font-bold text-[#2c7a7b] whitespace-nowrap">Languages</h2>
+              <div className="w-full h-px bg-[#2c7a7b]/30"></div>
+            </div>
+            <div className="flex flex-wrap gap-2">
+              {languages.map((lang: any, idx: number) => {
+                const name = typeof lang === 'string' ? lang : lang.name || lang.language || '';
+                const level = typeof lang === 'object' ? lang.level || lang.proficiency || '' : '';
+                if (!name && !level) return null;
+                return (
+                  <span key={idx} className="bg-teal-50 text-[#2c7a7b] border border-teal-100 px-3 py-1 rounded text-xs font-semibold">
+                    {name} {level ? `(${level})` : ''}
+                  </span>
+                );
+              })}
+            </div>
           </section>
         )}
       </Card>
@@ -682,8 +747,8 @@ export function ResumePreview({ data = {}, template = "modern" }: { data: any; t
                   <div key={idx} className="flex justify-between items-baseline">
                     <div>
                       <h3 className="text-xs font-bold text-gray-900">{title}</h3>
-                      {issuer && title !== issuer && (
-                        <p className="text-[11px] text-gray-600">{issuer}</p>
+                      {issuer && (
+                        <p className="text-[11px] text-gray-600 font-medium">{issuer}</p>
                       )}
                     </div>
                     {date && (
@@ -705,12 +770,12 @@ export function ResumePreview({ data = {}, template = "modern" }: { data: any; t
             </h2>
             <div className="flex flex-wrap gap-2">
               {languages.map((lang: any, idx: number) => {
-                const name = typeof lang === 'string' ? lang : lang.name || lang.language || lang.level || '';
-                const proficiency = typeof lang === 'object' ? lang.proficiency || lang.level || '' : '';
-                if (!name && !proficiency) return null;
+                const name = typeof lang === 'string' ? lang : lang.name || lang.language || '';
+                const level = typeof lang === 'object' ? lang.level || lang.proficiency || '' : '';
+                if (!name && !level) return null;
                 return (
-                  <span key={idx} className="bg-gray-100 border border-gray-200 text-gray-800 px-2.5 py-1 rounded text-[11px] font-semibold">
-                    {name} {proficiency && name !== proficiency ? `(${proficiency})` : ''}
+                  <span key={idx} className="bg-indigo-50 border border-indigo-100 text-indigo-950 px-2.5 py-1 rounded text-[11px] font-semibold">
+                    {name} {level ? `(${level})` : ''}
                   </span>
                 );
               })}
@@ -842,7 +907,7 @@ export function ResumePreview({ data = {}, template = "modern" }: { data: any; t
                   <div key={idx} className="flex justify-between items-baseline border-b border-gray-100 pb-1">
                     <div>
                       <h3 className="text-xs font-bold text-gray-900">{title}</h3>
-                      {issuer && title !== issuer && <p className="text-[11px] text-gray-600">{issuer}</p>}
+                      {issuer && <p className="text-[11px] text-gray-600 font-medium">{issuer}</p>}
                     </div>
                     {date && <span className="text-[11px] font-semibold text-gray-500">{date}</span>}
                   </div>
@@ -859,12 +924,12 @@ export function ResumePreview({ data = {}, template = "modern" }: { data: any; t
             </h2>
             <div className={`flex flex-wrap gap-2 ${isMinimal ? "justify-center" : "justify-start"}`}>
               {languages.map((lang: any, idx: number) => {
-                const name = typeof lang === 'string' ? lang : lang.name || lang.language || lang.level || '';
+                const name = typeof lang === 'string' ? lang : lang.name || lang.language || '';
                 const level = typeof lang === 'object' ? lang.level || lang.proficiency || '' : '';
                 if (!name && !level) return null;
                 return (
-                  <span key={idx} className="bg-gray-100 text-gray-800 px-3 py-1 rounded text-xs font-semibold">
-                    {name} {level && name !== level ? `(${level})` : ''}
+                  <span key={idx} className="bg-gray-100 border border-gray-200 text-gray-800 px-3 py-1 rounded text-xs font-semibold">
+                    {name} {level ? `(${level})` : ''}
                   </span>
                 );
               })}
