@@ -828,16 +828,46 @@ export function ResumePreview({ data = {}, template = "modern" }: { data: any; t
         )}
 
         {hasData(certificates) && (
-          <section>
+          <section className="mb-8">
             <h2 className={`text-lg font-bold mb-4 uppercase tracking-widest ${isModern ? "text-blue-600 border-b border-blue-200 pb-1" : "text-gray-900 border-b pb-1"}`}>
-              Certificates
+              Certificates & Credentials
             </h2>
-            <div className="space-y-2">
-              {certificates.map((cert: any, idx: number) => (
-                <div key={idx} className="text-xs font-medium text-gray-800">
-                  {cert.title || cert.name}
-                </div>
-              ))}
+            <div className="space-y-3">
+              {certificates.map((cert: any, idx: number) => {
+                const title = cert.title || cert.name || cert.certificateName || cert.certName || cert.issuer || cert.organization || '';
+                const issuer = cert.issuer || cert.organization || cert.org || cert.issuingOrganization || '';
+                const date = cert.date || cert.issueDate || cert.year || '';
+                if (!title && !issuer && !date) return null;
+                return (
+                  <div key={idx} className="flex justify-between items-baseline border-b border-gray-100 pb-1">
+                    <div>
+                      <h3 className="text-xs font-bold text-gray-900">{title}</h3>
+                      {issuer && title !== issuer && <p className="text-[11px] text-gray-600">{issuer}</p>}
+                    </div>
+                    {date && <span className="text-[11px] font-semibold text-gray-500">{date}</span>}
+                  </div>
+                );
+              })}
+            </div>
+          </section>
+        )}
+
+        {hasData(languages) && (
+          <section className="mb-8">
+            <h2 className={`text-lg font-bold mb-4 uppercase tracking-widest ${isModern ? "text-blue-600 border-b border-blue-200 pb-1" : "text-gray-900 border-b pb-1"}`}>
+              Languages
+            </h2>
+            <div className={`flex flex-wrap gap-2 ${isMinimal ? "justify-center" : "justify-start"}`}>
+              {languages.map((lang: any, idx: number) => {
+                const name = typeof lang === 'string' ? lang : lang.name || lang.language || lang.level || '';
+                const level = typeof lang === 'object' ? lang.level || lang.proficiency || '' : '';
+                if (!name && !level) return null;
+                return (
+                  <span key={idx} className="bg-gray-100 text-gray-800 px-3 py-1 rounded text-xs font-semibold">
+                    {name} {level && name !== level ? `(${level})` : ''}
+                  </span>
+                );
+              })}
             </div>
           </section>
         )}
