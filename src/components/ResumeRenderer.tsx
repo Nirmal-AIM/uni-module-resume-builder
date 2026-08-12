@@ -107,7 +107,7 @@ export function normalizeTemplateKey(key: string): string {
   }
   if (k === 'minimal') return 'minimal';
   if (k === 'academic') return 'academic';
-  return 'modern';
+  return 'ats-6';
 }
 
 export function ResumeRenderer({ data, templateKey }: ResumeRendererProps) {

@@ -641,6 +641,8 @@ export function ResumePreview({ data = {}, template = "modern" }: { data: any; t
           <div className="flex flex-wrap justify-center gap-x-4 gap-y-1 text-xs text-gray-600 mt-2 font-medium">
             {personal.email && <span>Email: {personal.email}</span>}
             {personal.phone && <span>Phone: {personal.phone}</span>}
+            {(personal.location || personal.address) && <span>Location: {personal.location || personal.address}</span>}
+            {(personal.website || personal.portfolio) && <span>Portfolio: {personal.website || personal.portfolio}</span>}
             {personal.github && <span>GitHub: {personal.github}</span>}
             {personal.linkedin && <span>LinkedIn: {personal.linkedin}</span>}
           </div>

@@ -46,7 +46,7 @@ export function ResumeEditor() {
   const navigate = useNavigate();
   const [searchParams] = useSearchParams();
   const { user, profile, logout } = useAuth();
-  const initialTemplate = searchParams.get("template") || "modern-blue";
+  const initialTemplate = searchParams.get("template") || "ats-6";
 
   const [activeSection, setActiveSection] = useState<string | null>("personal");
   const [selectedTemplate, setSelectedTemplate] = useState<string>(initialTemplate);
