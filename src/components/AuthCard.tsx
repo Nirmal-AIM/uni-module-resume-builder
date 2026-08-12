@@ -356,6 +356,11 @@ export function AuthCard({ initialMode = 'login' }: { initialMode?: 'login' | 's
         <p className="flex items-center justify-center gap-2 pt-2 text-xs font-medium text-emerald-500">
           <LockKeyhole className="h-3.5 w-3.5" /> Your data is secure and encrypted
         </p>
+
+        {/* Developer Credit */}
+        <p className="text-center pt-2 text-xs font-semibold text-gray-500">
+          Built &amp; Developed by <span className="font-extrabold text-[#fc4a27]">Nirmal Kollipara</span>
+        </p>
       </div>
     </div>
   );
