@@ -1,7 +1,7 @@
 import { useState, useEffect, useRef } from 'react';
 import { useAuth } from '@/context/AuthContext';
 import { useNavigate } from 'react-router-dom';
-import { loadResume, saveResume, type ResumeRecord } from '@/services/resumeService';
+import { loadResume, type ResumeRecord } from '@/services/resumeService';
 import {
   LayoutDashboard,
   LayoutTemplate,
@@ -301,11 +301,10 @@ export function Dashboard() {
                 key={item.id}
                 type="button"
                 onClick={() => handleSidebarClick(item)}
-                className={`flex items-center gap-3.5 rounded-xl px-4 py-3 text-sm font-medium transition-all ${
-                  isActive
-                    ? 'bg-[#153459] text-white shadow-sm font-semibold'
-                    : 'text-[#8ca0b8] hover:bg-[#0d2d52] hover:text-white'
-                }`}
+                className={`flex items-center gap-3.5 rounded-xl px-4 py-3 text-sm font-medium transition-all ${isActive
+                  ? 'bg-[#153459] text-white shadow-sm font-semibold'
+                  : 'text-[#8ca0b8] hover:bg-[#0d2d52] hover:text-white'
+                  }`}
               >
                 <Icon className={`h-4.5 w-4.5 shrink-0 ${isActive ? 'text-white' : 'text-[#8ca0b8]'}`} />
                 <span className="truncate">{item.label}</span>
@@ -416,10 +415,10 @@ export function Dashboard() {
             <div className="flex items-center gap-5">
               <div className="flex h-14 w-14 shrink-0 items-center justify-center rounded-2xl bg-orange-50 text-[#fc4a27] group-hover:scale-105 transition-transform">
                 <svg width="32" height="32" viewBox="0 0 24 24" fill="none">
-                  <rect x="4" y="2" width="14" height="18" rx="2" stroke="currentColor" strokeWidth="1.5"/>
-                  <path d="M8 7h6M8 11h6M8 15h3" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round"/>
-                  <circle cx="17" cy="17" r="4" fill="currentColor"/>
-                  <path d="M17 15v4M15 17h4" stroke="white" strokeWidth="1.5" strokeLinecap="round"/>
+                  <rect x="4" y="2" width="14" height="18" rx="2" stroke="currentColor" strokeWidth="1.5" />
+                  <path d="M8 7h6M8 11h6M8 15h3" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" />
+                  <circle cx="17" cy="17" r="4" fill="currentColor" />
+                  <path d="M17 15v4M15 17h4" stroke="white" strokeWidth="1.5" strokeLinecap="round" />
                 </svg>
               </div>
               <div>
@@ -813,11 +812,10 @@ export function Dashboard() {
                   className={`flex ${msg.sender === 'user' ? 'justify-end' : 'justify-start'}`}
                 >
                   <div
-                    className={`max-w-[85%] rounded-2xl p-3.5 text-xs leading-relaxed ${
-                      msg.sender === 'user'
-                        ? 'bg-[#fc4a27] text-white rounded-br-none shadow-xs font-medium'
-                        : 'bg-white border border-gray-200 text-gray-800 rounded-bl-none shadow-xs'
-                    }`}
+                    className={`max-w-[85%] rounded-2xl p-3.5 text-xs leading-relaxed ${msg.sender === 'user'
+                      ? 'bg-[#fc4a27] text-white rounded-br-none shadow-xs font-medium'
+                      : 'bg-white border border-gray-200 text-gray-800 rounded-bl-none shadow-xs'
+                      }`}
                   >
                     {msg.text}
                   </div>
@@ -856,3 +854,7 @@ export function Dashboard() {
     </div>
   );
 }
+function saveResume(arg0: { title: string; resume_data: any; template_key: string; }) {
+  throw new Error('Function not implemented.');
+}
+

@@ -621,6 +621,55 @@ export function ResumePreview({ data = {}, template = "modern" }: { data: any; t
             </div>
           </section>
         )}
+
+        {hasData(certificates) && (
+          <section className="mb-6">
+            <h2 className="text-xs font-bold uppercase tracking-wider text-indigo-950 border-b border-indigo-200 pb-1 mb-2">
+              Certifications & Credentials
+            </h2>
+            <div className="space-y-2">
+              {certificates.map((cert: any, idx: number) => {
+                const certName = cert.title || cert.name || cert.certificateName || cert.certName;
+                if (!certName) return null;
+                return (
+                  <div key={idx} className="flex justify-between items-baseline">
+                    <div>
+                      <h3 className="text-xs font-bold text-gray-900">{certName}</h3>
+                      {(cert.issuer || cert.organization) && (
+                        <p className="text-[11px] text-gray-600">{cert.issuer || cert.organization}</p>
+                      )}
+                    </div>
+                    {(cert.date || cert.issueDate || cert.year) && (
+                      <span className="text-[11px] font-semibold text-indigo-700">
+                        {cert.date || cert.issueDate || cert.year}
+                      </span>
+                    )}
+                  </div>
+                );
+              })}
+            </div>
+          </section>
+        )}
+
+        {hasData(languages) && (
+          <section className="mb-6">
+            <h2 className="text-xs font-bold uppercase tracking-wider text-indigo-950 border-b border-indigo-200 pb-1 mb-2">
+              Languages
+            </h2>
+            <div className="flex flex-wrap gap-2">
+              {languages.map((lang: any, idx: number) => {
+                const name = typeof lang === 'string' ? lang : lang.name || lang.language;
+                const proficiency = typeof lang === 'object' ? lang.proficiency || lang.level : '';
+                if (!name) return null;
+                return (
+                  <span key={idx} className="bg-gray-100 border border-gray-200 text-gray-800 px-2.5 py-1 rounded text-[11px] font-semibold">
+                    {name} {proficiency ? `(${proficiency})` : ''}
+                  </span>
+                );
+              })}
+            </div>
+          </section>
+        )}
       </Card>
     );
   }
