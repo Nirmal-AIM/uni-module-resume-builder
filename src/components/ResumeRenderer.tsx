@@ -12,9 +12,30 @@ export function adaptResumeData(data: any) {
   const personal = data.personal || {};
   const isUniFormat = Boolean(data.education_list || personal.jobTitle || (data.summary && typeof data.summary === 'object'));
 
+  const normalizedCertificates = (data.certificates || data.certifications || []).map((cert: any) => {
+    if (typeof cert === 'string') return { title: cert, issuer: '', date: '' };
+    return {
+      id: cert?.id,
+      title: cert?.title || cert?.name || cert?.certificateName || cert?.certName || '',
+      name: cert?.name || cert?.title || cert?.certificateName || cert?.certName || '',
+      issuer: cert?.issuer || cert?.organization || cert?.org || cert?.issuingOrganization || '',
+      date: cert?.date || cert?.issueDate || cert?.year || '',
+    };
+  });
+
+  const normalizedLanguages = (data.languages || []).map((lang: any) => {
+    if (typeof lang === 'string') return { name: lang, level: '' };
+    return {
+      name: lang?.name || lang?.language || '',
+      level: lang?.level || lang?.proficiency || '',
+    };
+  });
+
   if (isUniFormat) {
     return {
       ...data,
+      certificates: normalizedCertificates,
+      languages: normalizedLanguages,
       personal: {
         ...personal,
         jobTitle: personal.jobTitle || personal.professionalTitle || '',
@@ -63,14 +84,8 @@ export function adaptResumeData(data: any) {
       to: proj.endDate || proj.to || '',
       desc: proj.description || proj.desc || '',
     })),
-    certificates: (data.certifications || data.certificates || []).map((cert: any) => ({
-      id: cert.id,
-      title: cert.name || cert.title || '',
-      name: cert.name || cert.title || '',
-      issuer: cert.issuer || cert.org || '',
-      date: cert.issueDate || cert.date || '',
-    })),
-    languages: data.languages || [],
+    certificates: normalizedCertificates,
+    languages: normalizedLanguages,
     skills: data.skills || [],
   };
 }
