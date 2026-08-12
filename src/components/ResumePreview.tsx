@@ -536,6 +536,18 @@ export function ResumePreview({ data = {}, template = "modern" }: { data: any; t
           </div>
         </header>
 
+        {/* Profile / Professional Summary */}
+        {Boolean(summaryText || safeData.summary?.text || safeData.summary?.summary || (typeof safeData.summary === 'string' ? safeData.summary : '')) && (
+          <section className="mb-6">
+            <h2 className="text-xs font-bold uppercase tracking-wider text-indigo-950 border-b border-indigo-200 pb-1 mb-2">
+              Professional Summary
+            </h2>
+            <p className="text-xs text-gray-700 leading-relaxed font-normal">
+              {summaryText || safeData.summary?.text || safeData.summary?.summary || (typeof safeData.summary === 'string' ? safeData.summary : '')}
+            </p>
+          </section>
+        )}
+
         {/* Education First for College Students */}
         {hasData(educations) && (
           <section className="mb-6">
